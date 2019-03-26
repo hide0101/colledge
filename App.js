@@ -7,6 +7,8 @@
  */
 
 import React, {Component} from 'react';
+import SharedGroupPreferences from 'react-native-shared-group-preferences'
+const appGroupIdentifier = "group.org.reactjs.native.example.colledge"
 import {Platform, StyleSheet, Text, View} from 'react-native';
 
 const instructions = Platform.select({
@@ -18,12 +20,27 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      value: ''
+    }
+    this.loadData()
+  }
+
+  async loadData() {
+    try {
+      const value = await SharedGroupPreferences.getItem("savedData", appGroupIdentifier)
+      this.setState({ value })
+    } catch (error) {
+      console.log(error)
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <Text style={styles.welcome}>{ this.state.value }</Text>
       </View>
     );
   }

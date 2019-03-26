@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Modal from 'react-native-modalbox'
 import ShareExtension from 'react-native-share-extension'
+import SharedGroupPreferences from 'react-native-shared-group-preferences'
+const appGroupIdentifier = "group.org.reactjs.native.example.colledge"
 import {
   Text,
   View,
@@ -20,6 +22,7 @@ export default class Share extends Component {
   async componentDidMount() {
     try {
       const { type, value } = await ShareExtension.data()
+      await SharedGroupPreferences.setItem("savedData", value, appGroupIdentifier)
       this.setState({
         type,
         value
